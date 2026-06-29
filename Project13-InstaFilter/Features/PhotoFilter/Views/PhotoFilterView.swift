@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol PhotoFilterViewDelegate: AnyObject {
+    func didChangeIntensity(_ value: Float)
+    func didTapChangeFilter()
+    func didTapSave()
+}
+
 final class PhotoFilterView: UIView {
+    
+    weak var delegate: PhotoFilterViewDelegate?
 
     let imageView = UIImageView()
     let intensitySlider = UISlider()
@@ -46,6 +54,7 @@ private extension PhotoFilterView {
 
     func configureSlider() {
         intensitySlider.translatesAutoresizingMaskIntoConstraints = false
+        intensitySlider.addTarget(self, action: #selector(intensityChanged), for: .valueChanged)
     }
 
     func configureButtons() {
@@ -54,6 +63,10 @@ private extension PhotoFilterView {
 
         changeFilterButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        changeFilterButton.addTarget(self, action: #selector(changeFilterTapped), for: .touchUpInside)
+        
+        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
     }
 
     func setupHierarchy() {
@@ -84,5 +97,17 @@ private extension PhotoFilterView {
             saveButton.centerYAnchor.constraint(equalTo: changeFilterButton.centerYAnchor),
             saveButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
+    }
+    
+    @objc func intensityChanged() {
+        delegate?.didChangeIntensity(intensitySlider.value)
+    }
+
+    @objc func changeFilterTapped() {
+        delegate?.didTapChangeFilter()
+    }
+
+    @objc func saveTapped() {
+        delegate?.didTapSave()
     }
 }
