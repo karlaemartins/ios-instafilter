@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum FilterOption {
+enum FilterOption: CaseIterable {
     case bumpDistortion
     case gaussianBlur
     case pixellate

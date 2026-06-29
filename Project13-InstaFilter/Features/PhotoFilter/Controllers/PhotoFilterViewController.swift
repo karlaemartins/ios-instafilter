@@ -50,8 +50,17 @@ final class PhotoFilterViewController: UIViewController, PhotoFilterViewModelDel
     }
 
     func didTapChangeFilter() {
-       
+        let ac = UIAlertController(title: "Choose Filter", message: nil, preferredStyle: .actionSheet)
+        
+        for filter in FilterOption.allCases {
+            ac.addAction(UIAlertAction(title: filter.displayName, style: .default) { [weak self] _ in
+                self?.viewModel.updateFilter(filter)
 
+            })
+        }
+
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(ac, animated: true)
     }
 
     func didTapSave() {
