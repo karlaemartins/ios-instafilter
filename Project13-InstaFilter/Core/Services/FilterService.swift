@@ -12,7 +12,7 @@ final class FilterService: FilterServiceProtocol {
 
     private let context = CIContext()
 
-    func applyFilter(to image: UIImage, filter: FilterOption, intensity: Float) -> UIImage? {
+    func applyFilter(to image: UIImage, filter: FilterOption, parameters: FilterParameters) -> UIImage? {
 
         guard let beginImage = CIImage(image: image) else {
             return nil
@@ -27,11 +27,11 @@ final class FilterService: FilterServiceProtocol {
         let inputKeys = currentFilter.inputKeys
 
         if inputKeys.contains(kCIInputIntensityKey) {
-            currentFilter.setValue(intensity, forKey: kCIInputIntensityKey)
+            currentFilter.setValue(parameters.intensity, forKey: kCIInputIntensityKey)
         }
 
         if inputKeys.contains(kCIInputRadiusKey) {
-            currentFilter.setValue(intensity * 200, forKey: kCIInputRadiusKey)
+            currentFilter.setValue(parameters.radius, forKey: kCIInputRadiusKey)
         }
 
         if inputKeys.contains(kCIInputCenterKey) {

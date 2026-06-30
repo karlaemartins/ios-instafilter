@@ -8,5 +8,5 @@
 import UIKit
 
 protocol FilterServiceProtocol {
-    func applyFilter(to image: UIImage, filter: FilterOption, intensity: Float) -> UIImage?
+    func applyFilter(to image: UIImage, filter: FilterOption, parameters: FilterParameters) -> UIImage?
 }

@@ -85,6 +85,10 @@ extension PhotoFilterViewController: PhotoFilterViewDelegate {
         viewModel.updateIntensity(value)
     }
     
+    func didChangeRadius(_ value: Float) {
+        viewModel.updateRadius(value)
+    }
+    
     func didTapChangeFilter() {
         let ac = UIAlertController(title: "Choose Filter", message: nil, preferredStyle: .actionSheet)
 

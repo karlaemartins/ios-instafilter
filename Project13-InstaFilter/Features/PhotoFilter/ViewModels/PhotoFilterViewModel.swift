@@ -19,15 +19,15 @@ final class PhotoFilterViewModel {
     private var originalImage: UIImage?
     private var processedImage: UIImage?
 
-    private var selectedFilter: FilterOption = .sepia
-    private var intensity: Float = 0.5
+    private var selectedFilter: FilterOption?
+    private var parameters = FilterParameters()
     
     var currentImage: UIImage? {
         processedImage
     }
     
     var currentFilterName: String {
-        selectedFilter.displayName
+        selectedFilter?.displayName ?? "Change Filter"
     }
     
     init(filterService: FilterServiceProtocol) {
@@ -43,7 +43,12 @@ final class PhotoFilterViewModel {
     }
     
     func updateIntensity(_ value: Float) {
-        intensity = value
+        parameters.intensity = value
+        applyCurrentFilter()
+    }
+    
+    func updateRadius(_ value: Float) {
+        parameters.radius = value
         applyCurrentFilter()
     }
     
@@ -54,8 +59,9 @@ final class PhotoFilterViewModel {
     
     private func applyCurrentFilter() {
         guard let originalImage else { return }
+        guard let selectedFilter else { return }
 
-        processedImage = filterService.applyFilter(to: originalImage, filter: selectedFilter, intensity: intensity)
+        processedImage = filterService.applyFilter(to: originalImage, filter: selectedFilter, parameters: parameters)
 
         if let processedImage {
             delegate?.didUpdateImage(processedImage)
